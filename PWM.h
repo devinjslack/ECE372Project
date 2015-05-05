@@ -23,13 +23,5 @@ void setDutyCycle_OC1(double);
 void setDutyCycle_OC2(double);//toil and trouble
 void init_Output_Compare_2();
 
-void continueForward();
-void softLeft();
-void softRight();
-void hardLeft();
-void hardRight();
-void turn180();
-void doABarrelRoll();
-
 #endif	/* PWM_H */
 

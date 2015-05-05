@@ -1,4 +1,4 @@
-/* 
+/*
  * File:   timer.h
  * Author: Kevin
  *
@@ -8,7 +8,7 @@
 #ifndef TIMER_H
 #define	TIMER_H
 
-#define FCY  14745600
+#define FCY  1474560
 
 #define LOW 0
 #define HIGH 1
@@ -25,15 +25,13 @@
 #define TIMER3FLAG IFS0bits.T3IF
 #define TIMER3ONOFF T3CONbits.TON
 
+#define TENTH_SECOND .1
 #define ONE_MILISECOND .001
 #define ONE_MICROSECOND .000001
 #define ENABLE 1
 #define DISABLE 0
 
 void init_Timer1();
-void init_Timer2();
-//void delay_mS(unsigned int delay);
-//void delay_uS(unsigned int delay);
 
 #endif	/* TIMER_H */
 

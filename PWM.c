@@ -1,13 +1,10 @@
 #include <p24FJ64GA002.h>
 #include "PWM.h"
 #include "timer.h"
+#include "final.h"
 #include <libpic30.h>
 
-void _ISR _T3Interrupt() {
-    // IFS0bits.OC1IF = LOW;
-    TIMER3FLAG = LOW; //Lower the flag
-
-}
+void _ISR _T3Interrupt() { TIMER3FLAG = LOW; }
 
 void init_Timer3_PWM() {
 
@@ -95,19 +92,16 @@ void setDutyCycle_OC1(double speed) {
 
     //10 is full speed forward, -10 is full speed reverse
     double velocity = 0;
-    velocity = 0.06 * (speed * speed) + 4;
+    velocity = PWM_VERTICALMULTIPLIER * (speed * speed) + PWM_MINIMUM_DUTY_CYCLE;
 
 
-    if (velocity > 10) velocity = 10;
-//    if (velocity < -10) velocity = -10;
+    if (velocity > PWM_MAX_DUTY_CYCLE) velocity = PWM_MAX_DUTY_CYCLE;
+
 
     if (speed < 0) {
-        //velocity *= -1;
 
         __builtin_write_OSCCONL(OSCCON & 0xBF);
         // Assign output compare 1 to pin 4
-//        RPOR0bits.RP0R = 0;
-//        RPOR0bits.RP1R = 18;
         RPOR0bits.RP0R = 18;
         RPOR0bits.RP1R = 0;
         __delay_ms(1);
@@ -118,8 +112,6 @@ void setDutyCycle_OC1(double speed) {
 
         __builtin_write_OSCCONL(OSCCON & 0xBF);
         // Assign output compare 1 to pin 5
-//        RPOR0bits.RP0R = 18;
-//        RPOR0bits.RP1R = 0;
         RPOR0bits.RP0R = 0;
         RPOR0bits.RP1R = 18;
         __delay_ms(1);
@@ -141,13 +133,11 @@ void setDutyCycle_OC2(double speed) {
 
 
     double velocity = 0;
-    velocity = 0.06 * (speed * speed) + 4;
+    velocity = PWM_VERTICALMULTIPLIER * (speed * speed) + PWM_MINIMUM_DUTY_CYCLE;
 
-    if (velocity > 10) velocity = 10;
-//    if (velocity < -10) velocity = -10;
+    if (velocity > PWM_MAX_DUTY_CYCLE) velocity = PWM_MAX_DUTY_CYCLE;
 
     if (speed < 0) {
-       // velocity *= -1;
 
         __builtin_write_OSCCONL(OSCCON & 0xBF);
         // Assign output compare 1 to pin 18
@@ -163,7 +153,6 @@ void setDutyCycle_OC2(double speed) {
         // Assign output compare 1 to pin 17
         RPOR3bits.RP6R = 19;
         RPOR3bits.RP7R = 0;
-        
         __delay_ms(1);
         //Lock registers
         __builtin_write_OSCCONL(OSCCON | 0x40);
@@ -173,7 +162,6 @@ void setDutyCycle_OC2(double speed) {
         OC2RS = 0;
         return;
     }
-
 
     __delay_ms(1);
 
